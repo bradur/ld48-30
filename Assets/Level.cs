@@ -4,42 +4,69 @@ using System.Collections;
 public class Level : MonoBehaviour {
 
     public GameObject AllBogeys;
-    BogeyManager bg;
+    BogeyManager bogeyManager;
+    public GameObject Player;
+    Player player;
+    
+
+    int worldState = Manager.RealWorld;
 
     public Color Color1;
     public Color Color2;
 
-    public float switchTimer = 5.0f;
-    float timer = 0.0f;
+    public float switchInterval = 5.0f;
+    public float switchBackInterval = 2.0f;
 
-    SpriteRenderer sr;
+
+    bool switched = false;
+    float timer = 0.0f;
+    float backTimer = 0.0f;
+
+    SpriteRenderer levelSprite;
     
 
 	// Use this for initialization
 	void Start () {
-	   sr = gameObject.GetComponent<SpriteRenderer>();
-       bg = AllBogeys.GetComponent<BogeyManager>();
+
+	    levelSprite = gameObject.GetComponent<SpriteRenderer>();
+        bogeyManager = AllBogeys.GetComponent<BogeyManager>();
+        player = Player.GetComponent<Player>();
+        backTimer = switchBackInterval;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         timer -= Time.deltaTime;
         if(timer < 0.0f){
-    	    if(Input.GetKey(KeyCode.Space)){
+    	    if(Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)){
+
                 Switch();
+                switched = true;
+            }
+        }
+        if(switched){
+            backTimer -= Time.deltaTime;
+            if(backTimer < 0.0f){
+                Switch();
+                switched = false;
+                backTimer = switchBackInterval;
             }
         }
 	}
 
     void Switch() {
-        timer = switchTimer;
-        if(sr.color == Color1){
-            sr.color = Color2;
+        timer = switchInterval;
+        if(worldState == Manager.RealWorld){
+            worldState = Manager.DreamWorld;
+            levelSprite.color = Color2;
+            player.SetWorldState(worldState);
         }
         else{
-            sr.color = Color1;
+            worldState = Manager.RealWorld;
+            levelSprite.color = Color1;
+            player.SetWorldState(worldState);
         }
-        bg.Toggle();
+        bogeyManager.Toggle();
         // "return" key is broken :D
     }
 

@@ -45,16 +45,15 @@ real deal
 Two worlds:
 World 1
 -------
-- "real world"
-- "bogeys" that will kill you on collision
-- "bogeys" will keep on moving on their predestined paths during your stay in World 2
+[] "bogeys" that will kill you on collision
+[x] "bogeys" will keep on moving on their predestined paths during your stay in World 2
 
 World 2
 -------
-- "dreamlike world"
-- looks like world 1 but maybe a different tint
-- no moving things
-- you have a gun that you can shoot
-- you only get to stay for (5) seconds each visit
-- powerups(speed, extra life)
-- you always come back to the same spot in world 1
+[] "dreamlike world"
+[] looks like world 1 but maybe a different tint
+[] no moving things
+[] you have a gun that you can shoot
+[] you only get to stay for (5) seconds each visit
+[] powerups(speed, extra life)
+[] you always come back to the same spot in world 1
