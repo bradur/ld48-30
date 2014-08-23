@@ -5,6 +5,9 @@ public class Player : MonoBehaviour {
 
     public GameObject BulletPosition;
 
+    public GameObject HUDObject;
+    HUD hud;
+
     public float ShootInterval = 1.0f;
     float shootTimer = 0.0f;
     public float RotateSpeed = 1.0f;
@@ -13,23 +16,27 @@ public class Player : MonoBehaviour {
 
     public GameObject AllBullets;
     BulletManager bulletManager;
-    
+
+    bool laserIsReady = true;
 
     int worldState = Manager.RealWorld;
 
 	// Use this for initialization
 	void Start () {
         bulletManager = AllBullets.GetComponent<BulletManager>();
+        hud = HUDObject.GetComponent<HUD>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         shootTimer -= Time.deltaTime;
-	    if(shootTimer < 0.0f){
+	    if(shootTimer < 0.0f && !laserIsReady){
+            SetLaserReady();
+        }
+        if(laserIsReady){
             if(worldState == Manager.DreamWorld){
                 if(Input.GetKey(KeyCode.Space)){
                     Shoot();
-                    shootTimer = ShootInterval;
                 }
             }
         }
@@ -47,6 +54,7 @@ public class Player : MonoBehaviour {
     void Shoot(){
         bullet = (GameObject)Instantiate(Resources.Load("Prefabs/bullet"), BulletPosition.transform.position, transform.rotation);
         bullet.transform.parent = AllBullets.transform;
+        SetLaserNotReady();
     }
 
     // if the player hits the bogey
@@ -67,8 +75,20 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void SetLaserNotReady(){
+        laserIsReady = false;
+        hud.SetState(Manager.Off, Manager.IndicatorLaser);
+        shootTimer = ShootInterval;
+    }
+
+    void SetLaserReady(){
+        laserIsReady = true;
+        hud.SetState(Manager.On, Manager.IndicatorLaser);
+    }
+
     public void SetWorldState(int state){
         worldState = state;
         bulletManager.SetWorldState(state);
+        hud.SetState(state, Manager.IndicatorCurrent);
     }
 }

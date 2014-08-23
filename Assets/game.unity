@@ -257,11 +257,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 450878470}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6345eb3d32467714aaa05009ed71ead0, type: 3}
+  m_Script: {fileID: 11500000, guid: 742a46399a3feca4ea04bc5fd1d418e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnColor: {r: 0, g: 1, b: 0, a: 1}
-  OffColor: {r: .737254918, g: .278431386, b: .678431392, a: .925490201}
+  OffColor: {r: .760784328, g: .396078467, b: .768627465, a: 1}
+  OffText: OFF
+  currentState: 1
 --- !u!114 &450878473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,11 +542,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 580785189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6345eb3d32467714aaa05009ed71ead0, type: 3}
+  m_Script: {fileID: 11500000, guid: 742a46399a3feca4ea04bc5fd1d418e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnColor: {r: 0, g: 1, b: 0, a: 1}
-  OffColor: {r: .737254918, g: .278431386, b: .678431392, a: .925490201}
+  OffColor: {r: .760784328, g: .396078467, b: .768627465, a: 1}
+  OffText: CleanWorld
+  currentState: 1
 --- !u!1 &603200628
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,6 +741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPosition: {fileID: 382914908}
+  HUDObject: {fileID: 1506015582}
   ShootInterval: 1
   RotateSpeed: 5
   AllBullets: {fileID: 1203306997}
@@ -805,11 +810,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 810642874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6345eb3d32467714aaa05009ed71ead0, type: 3}
+  m_Script: {fileID: 11500000, guid: 742a46399a3feca4ea04bc5fd1d418e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnColor: {r: 0, g: 1, b: 0, a: 1}
-  OffColor: {r: .737254918, g: .278431386, b: .678431392, a: .925490201}
+  OffColor: {r: .760784328, g: .396078467, b: .768627465, a: 1}
+  OffText: CHARGING...
+  currentState: 1
 --- !u!114 &810642877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,6 +1130,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1506015583}
+  - 114: {fileID: 1506015584}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -1146,6 +1154,20 @@ Transform:
   - {fileID: 2082854083}
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!114 &1506015584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506015582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c2394e913eea41bc82f173794a2e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentWorld: {fileID: 580785189}
+  WorldSwitch: {fileID: 450878470}
+  Laser: {fileID: 810642874}
 --- !u!1 &1536218637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,10 +1345,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllBogeys: {fileID: 1852806357}
   Player: {fileID: 805680321}
+  HUDObject: {fileID: 1506015582}
   Color1: {r: 1, g: 1, b: 1, a: 1}
   Color2: {r: .400000006, g: .403921574, b: .411764711, a: 1}
   switchInterval: 5
   switchBackInterval: 2
+  keyPressCoolDown: .200000003
+  SwitchIsReady: 1
 --- !u!60 &1753667452
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1484,7 +1509,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1913493578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .131776273, y: .200000048, z: 0}
+  m_LocalPosition: {x: -.288240254, y: .200000048, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1935202712}
@@ -1720,7 +1745,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2082854082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.16881943, y: .200000525, z: 0}
+  m_LocalPosition: {x: 2.32878661, y: .200000525, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 559439451}
