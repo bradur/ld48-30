@@ -7,7 +7,6 @@ public class Level : MonoBehaviour {
     BogeyManager bogeyManager;
     public GameObject Player;
     Player player;
-    
 
     int worldState = Manager.RealWorld;
 
