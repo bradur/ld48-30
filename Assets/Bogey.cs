@@ -18,6 +18,12 @@ public class Bogey : MonoBehaviour {
     float horizontal;
     float x_angle;
 
+
+    public float DoubleHitKillInterval = 0.2f;
+    public float SingleHitsToKill = 4;
+    int hitsSustained = 0;
+    float latestHit;
+
 	// Use this for initialization
 	void Start () {
         moveTimer = Random.Range(0.0f, MaxMoveInterval);
@@ -29,7 +35,6 @@ public class Bogey : MonoBehaviour {
         if(moveTimer < 0.0f && !goBack){
             MoveRandomly();
             moveTimer = Random.Range(0.0f, MaxMoveInterval);
-            //Debug.Log(moveTimer);
         }
         else if(goBack){
             step = MaxForce/3.0f * Time.deltaTime;
@@ -53,18 +58,35 @@ public class Bogey : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other){
         if(other.gameObject.name == MyPerimeter.name){
-            //Debug.Log("Leaving perimeter!");
-            //rigidbody2D.AddForce(-currentMovement);
             goBack = true;
-            
         }
     }
 
+    void DieANonNaturalDeath(){
+        Destroy(gameObject);
+    }
+
+    void GetHit(){
+        hitsSustained++;
+        if(Time.time-latestHit <= DoubleHitKillInterval || SingleHitsToKill <= hitsSustained){
+            DieANonNaturalDeath();
+        }
+        else{
+            float x = transform.localScale.x;
+            float y = transform.localScale.y;
+            transform.localScale = new Vector3(x*0.75f, y*0.75f, 1.0f);
+        }
+        latestHit = Time.time;
+    }
+
+
     void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.name == MyPerimeter.name){
-            //Debug.Log("Entering perimeter!");
-            //rigidbody2D.AddForce(-currentMovement);
             moveTimer = Random.Range(0.0f, MaxMoveInterval);
+        }
+        if(other.gameObject.tag == "bullet"){
+            Destroy(other.gameObject);
+            GetHit();
         }
     }
 }

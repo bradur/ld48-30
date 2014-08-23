@@ -5,6 +5,9 @@ TagManager:
   tags:
   - bogey
   - boundary
+  - wall
+  - bogeyboundary
+  - bullet
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

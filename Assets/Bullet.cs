@@ -20,9 +20,26 @@ public class Bullet : MonoBehaviour {
         if(other.gameObject.tag == "boundary"){
             HitBoundary();
         }
+        if(other.gameObject.tag == "wall"){
+            HitWall();
+        }
+
+        if(other.gameObject.tag == "bogeyboundary"){
+            HitBogey();
+        }
+
     }
 
     void HitBoundary(){
         Destroy(gameObject);
     }
+
+    void HitWall(){
+        Destroy(gameObject);
+    }
+
+    void HitBogey(){
+        //Destroy(gameObject);
+    }
+
 }

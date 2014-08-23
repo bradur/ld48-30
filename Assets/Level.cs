@@ -27,7 +27,10 @@ public class Level : MonoBehaviour {
     float timer = 0.0f;
     float backTimer = 0.0f;
 
+    SpriteRenderer[] spriteArray;
+
     SpriteRenderer levelSprite;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +40,13 @@ public class Level : MonoBehaviour {
         bogeyManager = AllBogeys.GetComponent<BogeyManager>();
         player = Player.GetComponent<Player>();
         backTimer = switchBackInterval;
+
+        int i = 0;
+        spriteArray = new SpriteRenderer[transform.childCount+1];
+        spriteArray[i++] = levelSprite;
+        foreach(Transform child in transform){
+            spriteArray[i++] = child.gameObject.GetComponent<SpriteRenderer>();
+        }
 	}
 	
 	// Update is called once per frame
@@ -74,12 +84,19 @@ public class Level : MonoBehaviour {
         hud.SetState(Manager.Off, Manager.IndicatorSwitch);
     }
 
+    void SetColor(Color newColor){
+
+        for(int i = 0;i < spriteArray.Length; i++){
+            spriteArray[i].color = newColor;
+        }
+    }
+
     void Switch() {
         timer = switchInterval;
         // when we come into CleanWorld
         if(worldState == Manager.RealWorld){
             worldState = Manager.DreamWorld;
-            levelSprite.color = Color2;
+            SetColor(Color2);
             player.SetWorldState(worldState);
         }
         // when we come out of CleanWorld
@@ -87,10 +104,10 @@ public class Level : MonoBehaviour {
             SetSwitchNotReady(); // set switch not ready
             backTimer = switchBackInterval;
             worldState = Manager.RealWorld;
-            levelSprite.color = Color1;
+            SetColor(Color1);
             player.SetWorldState(worldState);
         }
-        Debug.Log("Switch: " + (worldState == 1 ? "RealWorld" : "DreamWorld") + " -> " + (worldState == 2 ? "RealWorld" : "DreamWorld") );
+        //Debug.Log("Switch: " + (worldState == 1 ? "RealWorld" : "DreamWorld") + " -> " + (worldState == 2 ? "RealWorld" : "DreamWorld") );
         bogeyManager.Toggle();
         // "return" key is broken :D
     }
