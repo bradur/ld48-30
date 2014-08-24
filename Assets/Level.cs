@@ -6,11 +6,18 @@ public class Level : MonoBehaviour {
     public GameObject AllBogeys;
     BogeyManager bogeyManager;
 
+    public GameObject AllAmmo;
+    AmmoPowerupManager ammoManager;
+
     public GameObject Player;
     Player player;
 
     public GameObject HUDObject;
     HUD hud;
+
+/*
+    public GameObject Music;*/
+    MusicManager musicManager;
 
     int worldState = Manager.RealWorld;
 
@@ -19,6 +26,8 @@ public class Level : MonoBehaviour {
 
     public float switchInterval = 5.0f;
     public float switchBackInterval = 2.0f;
+
+    public float dreamWorldSlowDown = 0.5f;
 
     public float keyPressCoolDown = 0.2f;
     float keyPressTimer;
@@ -38,8 +47,11 @@ public class Level : MonoBehaviour {
         hud = HUDObject.GetComponent<HUD>();
 	    levelSprite = gameObject.GetComponent<SpriteRenderer>();
         bogeyManager = AllBogeys.GetComponent<BogeyManager>();
+        ammoManager = AllAmmo.GetComponent<AmmoPowerupManager>();
         player = Player.GetComponent<Player>();
         backTimer = switchBackInterval;
+
+        musicManager = GameObject.FindGameObjectsWithTag("MusicManager")[0].GetComponent<MusicManager>();
 
         int i = 0;
         spriteArray = new SpriteRenderer[transform.childCount+1];
@@ -50,7 +62,7 @@ public class Level : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         timer -= Time.deltaTime;
         keyPressTimer -= Time.deltaTime;
         if(timer <= 0.0f && !SwitchIsReady){
@@ -95,21 +107,35 @@ public class Level : MonoBehaviour {
         timer = switchInterval;
         // when we come into CleanWorld
         if(worldState == Manager.RealWorld){
+            musicManager.ChangePitchTo(0.5f);
+            Time.timeScale = 0.5f;
             worldState = Manager.DreamWorld;
             SetColor(Color2);
+            ammoManager.SetWorldState(worldState);
             player.SetWorldState(worldState);
         }
         // when we come out of CleanWorld
         else if(worldState == Manager.DreamWorld){
+            if(Time.timeScale == dreamWorldSlowDown){
+                Time.timeScale = 1.0f;
+            }
+            musicManager.ResetPitch();
             SetSwitchNotReady(); // set switch not ready
             backTimer = switchBackInterval;
             worldState = Manager.RealWorld;
             SetColor(Color1);
+            ammoManager.SetWorldState(worldState);
             player.SetWorldState(worldState);
         }
         //Debug.Log("Switch: " + (worldState == 1 ? "RealWorld" : "DreamWorld") + " -> " + (worldState == 2 ? "RealWorld" : "DreamWorld") );
         bogeyManager.Toggle();
         // "return" key is broken :D
+    }
+
+    public void RestartLevel(){
+        if(player != null){
+            player.DieANonNaturalDeath();
+        }
     }
 
 }

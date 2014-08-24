@@ -9,12 +9,17 @@ public class LevelTimer : MonoBehaviour {
     float timer;
     float timeLeft;
     TextMesh timeDisplay;
+    public GameObject LevelObject;
+    Level level;
+
+
 
 	// Use this for initialization
 	void Start () {
         timer = updateInterval;
 	    timeDisplay = GetComponent<TextMesh>();
         timeLeft = timeLimit;
+        level = LevelObject.GetComponent<Level>();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +29,7 @@ public class LevelTimer : MonoBehaviour {
             timeLeft -= updateInterval;
             if(timeLeft <= 0.0f){
                 timeLeft = 0.0f;
+                level.RestartLevel();
             }
             UpdateDisplay();
             timer = updateInterval;

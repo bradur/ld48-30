@@ -5,8 +5,10 @@ public class HUDStateIndicator : MonoBehaviour {
 
     public Color OnColor;
     public Color OffColor;
+    public Color OutColor;
 
     public string OffText;
+    public string OutText;
     string onText;
 
     // state is a variable so that different starting conditions are allowed
@@ -34,6 +36,10 @@ public class HUDStateIndicator : MonoBehaviour {
 		else if(currentState == Manager.Off){
 			textMesh.text = OffText;
 			textMesh.color = OffColor;
+		}
+		else if(currentState == Manager.Out){
+			textMesh.text = OutText;
+			textMesh.color = OutColor;
 		}
 	}
 }

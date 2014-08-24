@@ -18,4 +18,10 @@ public class BogeyManager : MonoBehaviour {
             child.GetComponent<BogeyContainer>().Toggle();
         }
     }
+
+    public void DisableAllColliders(){
+        foreach(Transform child in transform){
+            child.GetComponent<BogeyContainer>().DisableColliders();
+        }
+    }
 }

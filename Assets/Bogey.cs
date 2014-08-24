@@ -19,10 +19,15 @@ public class Bogey : MonoBehaviour {
     float x_angle;
 
 
+    public float HitBogeyResizeMultiplier = 0.75f;
+    public bool DoubleHitKill = true;
+    public bool move = true;
+
     public float DoubleHitKillInterval = 0.2f;
     public float SingleHitsToKill = 4;
     int hitsSustained = 0;
     float latestHit;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,16 +36,18 @@ public class Bogey : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    moveTimer -= Time.deltaTime;
-        if(moveTimer < 0.0f && !goBack){
-            MoveRandomly();
-            moveTimer = Random.Range(0.0f, MaxMoveInterval);
-        }
-        else if(goBack){
-            step = MaxForce/3.0f * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, MyPerimeter.transform.position, step);
-            if(transform.position == MyPerimeter.transform.position){
-                goBack = false;
+        if(move){
+    	    moveTimer -= Time.deltaTime;
+            if(moveTimer < 0.0f && !goBack){
+                MoveRandomly();
+                moveTimer = Random.Range(0.0f, MaxMoveInterval);
+            }
+            else if(goBack){
+                step = MaxForce/3.0f * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, MyPerimeter.transform.position, step);
+                if(transform.position == MyPerimeter.transform.position){
+                    goBack = false;
+                }
             }
         }
 	}
@@ -68,13 +75,15 @@ public class Bogey : MonoBehaviour {
 
     void GetHit(){
         hitsSustained++;
+        //float test = Time.time-latestHit;
+        //Debug.Log("timepassed: "+ test + " interval: " + DoubleHitKillInterval);
         if(Time.time-latestHit <= DoubleHitKillInterval || SingleHitsToKill <= hitsSustained){
             DieANonNaturalDeath();
         }
         else{
             float x = transform.localScale.x;
             float y = transform.localScale.y;
-            transform.localScale = new Vector3(x*0.75f, y*0.75f, 1.0f);
+            transform.localScale = new Vector3(x*HitBogeyResizeMultiplier, y*HitBogeyResizeMultiplier, 1.0f);
         }
         latestHit = Time.time;
     }

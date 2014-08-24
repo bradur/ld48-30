@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour {
             HitWall();
         }
 
-        if(other.gameObject.tag == "bogeyboundary"){
+        if(other.gameObject.tag == "bogey"){
             HitBogey();
         }
 
